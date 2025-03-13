@@ -182,6 +182,8 @@ frontsolicitudes-app/
 │   │   │   ├── candidato-dto.ts
 │   │   │   ├── solicitud-dto.ts
 │   │   │   ├── tipo-estudio-dto.ts
+│   │   │   ├── filtro-solicitud-dto.ts
+│   │   │   ├── solicitudes-estado-dto.ts
 │   │   ├── guards/
 │   │   │   ├── auth.guard.ts
 │   ├── environments/

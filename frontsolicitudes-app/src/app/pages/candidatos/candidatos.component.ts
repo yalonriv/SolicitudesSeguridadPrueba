@@ -22,6 +22,8 @@ export class CandidatosComponent implements OnInit {
   candidatoForm: FormGroup;
   mostrarFormulario = false;
   editandoId: number | null = null;
+  errorMessage: string = '';
+  errorDetails: any[] = []; 
 
   constructor() {
     /**
@@ -50,8 +52,10 @@ export class CandidatosComponent implements OnInit {
   obtenerCandidatos() {
     this.candidatosService.getCandidatos().subscribe({
       next: (data) => this.candidatos = data,
-      error: (err) => console.error('Error al obtener candidatos', err)
-    });
+      error: (err) => this.errorMessage = err.message // Captura error
+    }, 
+  );
+    
   }
 
   /**
@@ -87,28 +91,21 @@ export class CandidatosComponent implements OnInit {
   guardarCandidato() {
     if (this.candidatoForm.invalid) return;
 
+    this.errorMessage = ''; // Limpiar mensaje de error antes de la petición
     const candidatoData = this.candidatoForm.value;
 
     if (this.editandoId !== null) {
       // 🚀 ACTUALIZAR CANDIDATO
       this.candidatosService.actualizarCandidato(this.editandoId, candidatoData).subscribe({
-        next: () => {
-          alert('Candidato actualizado correctamente');
-          this.obtenerCandidatos();
-          this.toggleFormulario();
-        },
-        error: (err) => console.error('Error al actualizar candidato', err)
+        next: (response) => this.verificarRespuesta(response),
+        error: (err) => this.manejarError(err)
       });
 
     } else {
       // 🚀 CREAR NUEVO CANDIDATO
       this.candidatosService.crearCandidato(candidatoData).subscribe({
-        next: () => {
-          alert('Candidato creado correctamente');
-          this.obtenerCandidatos();
-          this.toggleFormulario();
-        },
-        error: (err) => console.error('Error al crear candidato', err)
+        next: (response) => this.verificarRespuesta(response),
+        error: (err) => this.manejarError(err)
       });
     }
   }
@@ -124,8 +121,41 @@ export class CandidatosComponent implements OnInit {
           alert('Candidato eliminado correctamente');
           this.obtenerCandidatos(); // Recargar lista
         },
-        error: (err) => console.error('Error al eliminar candidato', err)
+        error: (err) => this.errorMessage = err.message // Captura error
       });
     }
   }
+
+/**
+ * Verifica si la respuesta del backend indica un error y lo muestra en pantalla.
+ */
+  verificarRespuesta(response: any) {
+    if (response.errors!=null) {
+      this.manejarError({ error: response });
+    } else {
+      alert('Operación exitosa');
+      this.obtenerCandidatos();
+      this.toggleFormulario();
+    }
+  }
+/**
+ * Maneja los errores de la API y los asigna a la variable `errorMessage`.
+ */
+  manejarError(err: any) {
+    if (err.error) {
+      if (err.error.message) {
+        this.errorMessage = err.error.message; // Mensaje general
+      }
+      if (err.error.errors) {
+        this.errorMessage;
+        Object.keys(err.error.errors).forEach((campo) => {
+          this.errorMessage += `${err.error.errors[campo].join(', ')}`;
+        });
+      }
+      alert(this.errorMessage)
+    } else {
+      this.errorMessage = 'Ocurrió un error inesperado.';
+    }
+  }
+  
 }
