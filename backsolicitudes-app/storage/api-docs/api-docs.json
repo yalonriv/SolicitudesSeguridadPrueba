@@ -1,0 +1,367 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "LOGIN para APP de solicitudes de seguridad",
+        "description": "Endpoints relacionados con la autenticación de usuarios",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Autenticación de usuario",
+                "description": "Iniciar sesión y obtener un token de acceso.",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Inicio de sesión exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJhbGciOiJIUzI1NiIsInR5c..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Credenciales incorrectas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Credenciales incorrectas"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user": {
+            "get": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Obtener información del usuario autenticado",
+                "description": "Obtener el usuario autenticado.",
+                "operationId": "7c1cf647d76fad4b3eb1549fa4fe2f4c",
+                "responses": {
+                    "200": {
+                        "description": "Usuario autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "John Doe"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "user@example.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Cerrar sesión",
+                "description": "Cerrar sesión y revocar el token de acceso.",
+                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "responses": {
+                    "200": {
+                        "description": "Sesión cerrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sesión cerrada"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/candidatos": {
+            "get": {
+                "tags": [
+                    "Candidatos"
+                ],
+                "summary": "Listar todos los candidatos",
+                "description": "Obtener la lista de candidatos.",
+                "operationId": "771e39f056538fd2cd0b54f1462f67b5",
+                "responses": {
+                    "200": {
+                        "description": "Lista de candidatos obtenida correctamente"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Candidatos"
+                ],
+                "summary": "Registrar un candidato",
+                "description": "Crear un nuevo candidato.",
+                "operationId": "05be56595b1b166c87797a3cd99ad736",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "apellido",
+                                    "documento_identidad",
+                                    "correo",
+                                    "telefono"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "maxLength": 100,
+                                        "example": "Juan"
+                                    },
+                                    "apellido": {
+                                        "type": "string",
+                                        "maxLength": 100,
+                                        "example": "Pérez"
+                                    },
+                                    "documento_identidad": {
+                                        "type": "string",
+                                        "example": "12345678"
+                                    },
+                                    "correo": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "juan.perez@example.com"
+                                    },
+                                    "telefono": {
+                                        "type": "string",
+                                        "example": "1234567890"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Candidato creado exitosamente"
+                    },
+                    "400": {
+                        "description": "Error en la validación de los datos"
+                    }
+                }
+            }
+        },
+        "/api/candidatos/{id}": {
+            "get": {
+                "tags": [
+                    "Candidatos"
+                ],
+                "summary": "Obtener un candidato específico",
+                "description": "Obtener un candidato por ID.",
+                "operationId": "d25026e49fffec50988bb15a1ca9779a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del candidato",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Candidato encontrado"
+                    },
+                    "400": {
+                        "description": "Candidato no encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Candidatos"
+                ],
+                "summary": "Actualizar un candidato",
+                "description": "Actualizar datos de un candidato.",
+                "operationId": "6c6f42a0d400a2cf53feafe0dab6ed95",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del candidato",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "apellido": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "documento_identidad": {
+                                        "type": "string"
+                                    },
+                                    "correo": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "telefono": {
+                                        "type": "string",
+                                        "example": "1234567890"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Candidato actualizado"
+                    },
+                    "400": {
+                        "description": "Candidato no encontrado o error de validación"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Candidatos"
+                ],
+                "summary": "Eliminar un candidato",
+                "description": "Eliminar un candidato.",
+                "operationId": "475c656198ce9db3d8cf86b4daf31d29",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del candidato",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Candidato eliminado"
+                    },
+                    "400": {
+                        "description": "Candidato no encontrado"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Autenticación",
+            "description": "Autenticación"
+        },
+        {
+            "name": "Candidatos",
+            "description": "Candidatos"
+        }
+    ]
+}

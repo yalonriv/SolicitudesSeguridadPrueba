@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\DB;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecuta la migración para crear la tabla 'solicitudes'.
+     *
+     * La tabla almacena las solicitudes realizadas por los candidatos.
      */
     public function up(): void
     {

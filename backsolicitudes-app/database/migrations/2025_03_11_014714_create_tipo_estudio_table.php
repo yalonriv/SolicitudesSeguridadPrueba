@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecuta la migración para crear la tabla 'tipo_estudio'.
+     *
+     * La tabla almacena los tipos de estudio de seguridad.
      */
     public function up(): void
     {

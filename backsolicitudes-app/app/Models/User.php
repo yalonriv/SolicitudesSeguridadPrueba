@@ -2,22 +2,34 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-
+/**
+ * Modelo User
+ *
+ * Representa a un usuario del sistema con autenticación.
+ *
+ * @property int $id ID del usuario.
+ * @property string $name Nombre del usuario.
+ * @property string $email Correo electrónico del usuario.
+ * @property string $password Contraseña encriptada del usuario.
+ * @property string|null $remember_token Token para recordar sesión.
+ * @property \Illuminate\Support\Carbon|null $email_verified_at Fecha de verificación del correo electrónico.
+ * @property \Illuminate\Support\Carbon|null $created_at Fecha de creación del usuario.
+ * @property \Illuminate\Support\Carbon|null $updated_at Fecha de última actualización del usuario.
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens;
 
     /**
-     * The attributes that are mass assignable.
+     * Atributos asignables masivamente.
      *
-     * @var list<string>
+     * @var string[]
      */
     protected $fillable = [
         'name',
@@ -26,9 +38,9 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Atributos ocultos en la serialización.
      *
-     * @var list<string>
+     * @var string[]
      */
     protected $hidden = [
         'password',
@@ -36,7 +48,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Atributos con casting automático.
      *
      * @return array<string, string>
      */

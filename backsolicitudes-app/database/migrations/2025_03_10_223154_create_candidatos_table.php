@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecuta la migración para crear la tabla 'candidatos'.
+     *
+     * La tabla almacenan la información personal de los candidatos.
      */
     public function up(): void
     {

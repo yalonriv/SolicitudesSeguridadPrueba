@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecuta la migración para crear la tabla 'users'.
+     *
+     * La tabla almacena la información de los usuarios.
      */
     public function up(): void
     {
