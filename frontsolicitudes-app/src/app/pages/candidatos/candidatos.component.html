@@ -1,0 +1,89 @@
+<div class="container mt-4">
+  <!-- Encabezado y Botón de Nuevo Candidato -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Lista de Candidatos</h2>
+    <button class="btn btn-primary" (click)="toggleFormulario()">
+      <i class="bi bi-person-plus-fill"></i> Nuevo Candidato
+    </button>
+  </div>
+
+  <!-- Formulario de Nuevo/Editar Candidato -->
+  <div class="modal fade show d-block" *ngIf="mostrarFormulario">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ editandoId ? 'Editar Candidato' : 'Nuevo Candidato' }}</h5>
+          <button type="button" class="btn-close" (click)="toggleFormulario()"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="candidatoForm" (ngSubmit)="guardarCandidato()">
+            <div class="mb-3">
+              <label class="form-label">Nombre:</label>
+              <input type="text" class="form-control" formControlName="nombre">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Apellido:</label>
+              <input type="text" class="form-control" formControlName="apellido">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Documento identidad:</label>
+              <input type="text" class="form-control" formControlName="documento_identidad">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Correo:</label>
+              <input type="email" class="form-control" formControlName="correo">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Teléfono:</label>
+              <input type="text" class="form-control" formControlName="telefono">
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+              <button type="submit" class="btn btn-success" [disabled]="candidatoForm.invalid">
+                {{ editandoId ? 'Actualizar' : 'Guardar' }}
+              </button>
+              <button type="button" class="btn btn-secondary" (click)="toggleFormulario()">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de Candidatos -->
+  <div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Correo</th>
+          <th>Teléfono</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let candidato of candidatos">
+          <td>{{ candidato.id }}</td>
+          <td>{{ candidato.nombre }}</td>
+          <td>{{ candidato.apellido }}</td>
+          <td>{{ candidato.correo }}</td>
+          <td>{{ candidato.telefono }}</td>
+          <td class="text-center">
+            <button class="btn btn-warning btn-sm me-2" (click)="editarCandidato(candidato)">
+              <i class="bi bi-pencil-square"></i> Editar
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="eliminarCandidato(candidato.id)">
+              <i class="bi bi-trash"></i> Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

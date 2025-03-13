@@ -1,0 +1,134 @@
+<div class="container mt-4">
+  <!-- Botón para CREAR una nueva solicitud -->
+
+  <!-- 🔥 FILTROS -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label class="form-label">Filtrar por Estado:</label>
+      <select class="form-select" [formControl]="estadoControl">
+        <option value="">Todos</option>
+        <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Filtrar por Tipo de Estudio:</label>
+      <select class="form-select" [formControl]="tipoEstudioControl">
+        <option value="">Todos</option>
+        <option *ngFor="let tipo of tiposEstudio" [value]="tipo.id">{{ tipo.nombre }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Tabla de solicitudes -->
+  <table class="table table-striped table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Tipo de Estudio</th>
+        <th>Precio</th>
+        <th>Estado</th>
+        <th>Candidato</th>
+        <th>Documento</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let solicitud of solicitudes">
+        <td>{{ solicitud.id }}</td>
+        <td>{{ solicitud.tipo_estudio.nombre }}</td>
+        <td>${{ solicitud.tipo_estudio.precio }}</td>
+        <span class="badge bg-light border" [ngClass]="{
+          'text-danger border-danger': solicitud.estado === 'pendiente',
+          'text-primary border-primary': solicitud.estado === 'en_proceso',
+          'text-success border-success': solicitud.estado === 'completada'
+        }">
+          {{ solicitud.estado }}
+        </span>
+        <td>{{ solicitud.candidato.nombre }}</td>
+        <td>{{ solicitud.candidato.documento_identidad }}</td>
+        <td>
+          <button class="btn btn-warning btn-sm" (click)="editarSolicitud(solicitud)">✏️ Editar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Botón para CREAR una nueva solicitud (centrado) -->
+<div class="d-flex justify-content-center mb-3">
+  <button class="btn btn-primary" (click)="resetFormulario(); mostrarFormulario = true; modoEdicion = false">
+    ➕ Nueva Solicitud
+  </button>
+</div>
+
+<!-- Modal para CREAR Solicitud -->
+<div class="modal fade show d-block" *ngIf="mostrarFormulario && !modoEdicion">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nueva Solicitud</h5>
+        <button type="button" class="btn-close" (click)="resetFormulario()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="solicitudFormCrear" (ngSubmit)="guardarSolicitud()">
+          <div class="mb-3">
+            <label class="form-label">Candidato:</label>
+            <select class="form-select" formControlName="candidato_id" required>
+              <option *ngFor="let candidato of candidatos" [value]="candidato.id">
+                {{ candidato.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Tipo de Estudio:</label>
+            <select class="form-select" formControlName="tipo_estudio_id" required>
+              <option *ngFor="let tipo of tiposEstudio" [value]="tipo.id">
+                {{ tipo.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Estado:</label>
+            <select class="form-select" formControlName="estado" required>
+              <option *ngFor="let estado of estados" [value]="estado">
+                {{ estado }}
+              </option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-success">Crear</button>
+          <button type="button" class="btn btn-secondary" (click)="resetFormulario()">Cancelar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para Editar Solicitud -->
+<div class="modal fade show d-block" *ngIf="mostrarFormulario && modoEdicion">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Editar Estado</h5>
+        <button type="button" class="btn-close" (click)="resetFormulario()"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Candidato:</strong> {{ candidato }}</p>
+        <p><strong>Tipo de Estudio:</strong> {{ tipoEstudio }}</p>
+
+        <form [formGroup]="solicitudFormEditar" (ngSubmit)="guardarSolicitud()">
+          <div class="mb-3">
+            <label class="form-label">Estado:</label>
+            <select class="form-select" formControlName="estado" required>
+              <option *ngFor="let estado of estados" [value]="estado">
+                {{ estado }}
+              </option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-warning">Actualizar</button>
+          <button type="button" class="btn btn-secondary" (click)="resetFormulario()">Cancelar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,18 @@
+<!-- Tabla de solicitudes por estado -->
+<div class="container mt-4">
+  <h3 class="text-center">Resumen de Solicitudes por Estado</h3>
+  <table class="table table-bordered text-center">
+    <thead class="table-light">
+      <tr>
+        <th>Estado</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let solicitudEstado of solicitudesPorEstado">
+        <td>{{ solicitudEstado.estado }}</td>
+        <td>{{ solicitudEstado.total }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
