@@ -13,21 +13,24 @@ import { FiltroSolicitudDTO } from '../../models/filtro-solicitud-dto';
   imports: [CommonModule, ReactiveFormsModule], 
 })
 export class SolicitudesComponent {
-  solicitudes: any[] = [];
-  candidatos: any[] = [];
-  tiposEstudio: any[] = [];
-  estados = ['pendiente', 'en_proceso', 'completada'];
+  solicitudes: any[] = []; // Lista de solicitudes cargadas desde la API
+  candidatos: any[] = []; // Lista de candidatos disponibles
+  tiposEstudio: any[] = []; // Lista de tipos de estudio
+  estados = ['pendiente', 'en_proceso', 'completada']; // Posibles estados de una solicitud
 
+  // Formularios para crear y editar solicitudes
   solicitudFormCrear: FormGroup;
   solicitudFormEditar: FormGroup;
 
+  // Variables de control para la interfaz
   mostrarFormulario = false;
   modoEdicion = false;
-  solicitudEditandoId: number | null = null;
-  candidato: string = '';
-  tipoEstudio: string = '';
-  solicitudesPorEstado: SolicitudEstadoDTO[] = [];
-  // 🔥 Filtros con FormControl
+  solicitudEditandoId: number | null = null; // ID de la solicitud en edición
+  candidato: string = ''; // Nombre del candidato en edición
+  tipoEstudio: string = ''; // Nombre del tipo de estudio en edición
+  solicitudesPorEstado: SolicitudEstadoDTO[] = []; // Resumen de solicitudes por estado
+
+  // Controles de filtro
   estadoControl = new FormControl('');
   tipoEstudioControl = new FormControl('');
 
@@ -37,7 +40,7 @@ export class SolicitudesComponent {
       candidato_id: ['', Validators.required],
       tipo_estudio_id: ['', Validators.required],
       estado: ['', Validators.required],
-      fecha_solicitud: [new Date().toISOString().split('T')[0]]
+      fecha_solicitud: [new Date().toISOString().split('T')[0]] // Fecha por defecto (hoy)
     });
 
     // Formulario para EDITAR solicitud
@@ -47,17 +50,20 @@ export class SolicitudesComponent {
   }
 
   ngOnInit() {
+    // Cargar datos iniciales
     this.cargarSolicitudes();
     this.cargarCandidatos();
     this.cargarTiposEstudio();
     this.cargarSolicitudesPorEstado();
 
-     // 🔥 Escuchar cambios en los filtros y aplicar automáticamente
-     this.estadoControl.valueChanges.subscribe(() => this.cargarSolicitudes());
-     this.tipoEstudioControl.valueChanges.subscribe(() => this.cargarSolicitudes());
-    
+    // 🔥 Escuchar cambios en los filtros y recargar automáticamente
+    this.estadoControl.valueChanges.subscribe(() => this.cargarSolicitudes());
+    this.tipoEstudioControl.valueChanges.subscribe(() => this.cargarSolicitudes());
   }
 
+  /**
+   * Carga la lista de solicitudes desde el servicio, aplicando filtros si existen.
+   */
   cargarSolicitudes() {
     const filtro: FiltroSolicitudDTO = {
       estado: this.estadoControl.value || undefined,
@@ -69,6 +75,9 @@ export class SolicitudesComponent {
     });
   }
 
+  /**
+   * Carga la lista de candidatos desde el servicio.
+   */
   cargarCandidatos() {
     this.solicitudesService.getCandidatos().subscribe({
       next: (data) => this.candidatos = data,
@@ -76,6 +85,9 @@ export class SolicitudesComponent {
     });
   }
 
+  /**
+   * Carga la lista de tipos de estudio desde el servicio.
+   */
   cargarTiposEstudio() {
     this.solicitudesService.getTiposEstudio().subscribe({
       next: (data) => this.tiposEstudio = data,
@@ -83,6 +95,10 @@ export class SolicitudesComponent {
     });
   }
 
+  /**
+   * Habilita el formulario para editar una solicitud específica.
+   * @param solicitud Solicitud seleccionada para edición.
+   */
   editarSolicitud(solicitud: any) {
     this.resetFormulario();
     this.solicitudEditandoId = solicitud.id;
@@ -97,8 +113,12 @@ export class SolicitudesComponent {
     });
   }
 
+  /**
+   * Guarda una solicitud, ya sea nueva o editada.
+   */
   guardarSolicitud() {
     if (this.modoEdicion) {
+      // Modo edición: actualizar solicitud existente
       if (this.solicitudFormEditar.valid && this.solicitudEditandoId) {
         const solicitudData = this.solicitudFormEditar.value;
 
@@ -112,6 +132,7 @@ export class SolicitudesComponent {
         });
       }
     } else {
+      // Modo creación: registrar nueva solicitud
       if (this.solicitudFormCrear.valid) {
         const solicitudData = this.solicitudFormCrear.value;
       
@@ -128,6 +149,9 @@ export class SolicitudesComponent {
     this.cargarSolicitudesPorEstado();
   }
 
+  /**
+   * Reinicia los formularios y oculta el formulario de edición/creación.
+   */
   resetFormulario() {
     this.solicitudFormCrear.reset();
     this.solicitudFormEditar.reset();
@@ -136,11 +160,14 @@ export class SolicitudesComponent {
     this.solicitudEditandoId = null;
   }
 
+  /**
+   * Carga el resumen de solicitudes agrupadas por estado.
+   */
   cargarSolicitudesPorEstado() {
     this.solicitudesService.getSolicitudesPorEstado().subscribe({
       next: (data) => {
         this.solicitudesPorEstado = data;
-        console.log(' Datos de solicitudes por estado:', this.solicitudesPorEstado);
+        console.log('📊 Datos de solicitudes por estado:', this.solicitudesPorEstado);
       },
       error: (err) => console.error('🚨 Error al cargar estadísticas:', err)
     });

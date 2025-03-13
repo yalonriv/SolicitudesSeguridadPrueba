@@ -1,18 +1,28 @@
-<!-- Tabla de solicitudes por estado -->
+<!-- Contenedor principal de la tabla -->
 <div class="container mt-4">
+
+  <!-- Título centrado -->
   <h3 class="text-center">Resumen de Solicitudes por Estado</h3>
+
+  <!-- Tabla que muestra el total de solicitudes por estado -->
   <table class="table table-bordered text-center">
+    
+    <!-- Encabezado de la tabla -->
     <thead class="table-light">
       <tr>
-        <th>Estado</th>
-        <th>Total</th>
+        <th>Estado</th>  <!-- Columna para el estado de la solicitud -->
+        <th>Total</th>   <!-- Columna para el número total de solicitudes en ese estado -->
       </tr>
     </thead>
+
+    <!-- Cuerpo de la tabla -->
     <tbody>
+      <!-- Recorre la lista de solicitudes por estado y las muestra en filas -->
       <tr *ngFor="let solicitudEstado of solicitudesPorEstado">
-        <td>{{ solicitudEstado.estado }}</td>
-        <td>{{ solicitudEstado.total }}</td>
+        <td>{{ solicitudEstado.estado }}</td>  <!-- Muestra el estado de la solicitud -->
+        <td>{{ solicitudEstado.total }}</td>   <!-- Muestra el total de solicitudes en ese estado -->
       </tr>
     </tbody>
+
   </table>
 </div>

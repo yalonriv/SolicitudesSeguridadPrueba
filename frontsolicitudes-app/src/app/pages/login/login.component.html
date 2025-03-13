@@ -1,7 +1,9 @@
 <div class="container d-flex justify-content-center align-items-center vh-100">
+  <!-- Tarjeta de formulario con sombra y espaciado -->
   <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
     <h2 class="text-center mb-4">Iniciar Sesión</h2>
 
+    <!-- Formulario de inicio de sesión -->
     <form [formGroup]="loginForm" (ngSubmit)="login()">
       
       <!-- Campo Email -->
@@ -9,7 +11,7 @@
         <label for="email" class="form-label">Correo:</label>
         <input type="email" id="email" class="form-control" formControlName="email" required>
 
-        <!-- Mensaje de error -->
+        <!-- Validación y mensajes de error -->
         <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-danger mt-1">
           <small *ngIf="loginForm.get('email')?.errors?.['required']">El correo es obligatorio</small>
           <small *ngIf="loginForm.get('email')?.errors?.['email']">Formato de correo inválido</small>
@@ -21,13 +23,13 @@
         <label for="password" class="form-label">Contraseña:</label>
         <input type="password" id="password" class="form-control" formControlName="password" required>
 
-        <!-- Mensaje de error -->
+        <!-- Validación y mensaje de error -->
         <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-danger mt-1">
           <small>La contraseña es obligatoria</small>
         </div>
       </div>
 
-      <!-- Botón de Enviar -->
+      <!-- Botón de envío deshabilitado si el formulario es inválido -->
       <button type="submit" class="btn btn-primary w-100" [disabled]="loginForm.invalid">Ingresar</button>
     </form>
   </div>

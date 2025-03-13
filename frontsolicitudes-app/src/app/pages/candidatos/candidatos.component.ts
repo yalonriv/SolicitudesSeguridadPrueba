@@ -10,6 +10,10 @@ import { CommonModule } from '@angular/common';
   templateUrl: './candidatos.component.html',
   styleUrls: ['./candidatos.component.css']
 })
+
+/**
+ * Clase para administración de candidatos
+ */
 export class CandidatosComponent implements OnInit {
   private fb = inject(FormBuilder);
   private candidatosService = inject(CandidatosService);
@@ -20,6 +24,9 @@ export class CandidatosComponent implements OnInit {
   editandoId: number | null = null;
 
   constructor() {
+    /**
+     * Inicializa el formulario de candidatos con validaciones.
+     */
     this.candidatoForm = this.fb.group({
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
@@ -29,10 +36,17 @@ export class CandidatosComponent implements OnInit {
     });
   }
 
+  /**
+   * Hook del ciclo de vida de Angular que se ejecuta al inicializar el componente.
+   * Obtiene la lista de candidatos.
+   */
   ngOnInit() {
     this.obtenerCandidatos();
   }
 
+  /**
+   * Obtiene la lista de candidatos desde el servicio y la asigna a la variable `candidatos`.
+   */
   obtenerCandidatos() {
     this.candidatosService.getCandidatos().subscribe({
       next: (data) => this.candidatos = data,
@@ -40,12 +54,19 @@ export class CandidatosComponent implements OnInit {
     });
   }
 
+  /**
+   * Muestra u oculta el formulario de candidatos y resetea el formulario.
+   */
   toggleFormulario() {
     this.mostrarFormulario = !this.mostrarFormulario;
     this.editandoId = null;
     this.candidatoForm.reset();
   }
 
+  /**
+   * Carga los datos del candidato en el formulario para su edición.
+   * @param candidato - Objeto con la información del candidato a editar.
+   */
   editarCandidato(candidato: any) {
     this.mostrarFormulario = true;
     this.editandoId = candidato.id;
@@ -59,6 +80,10 @@ export class CandidatosComponent implements OnInit {
     });
   }
 
+  /**
+   * Guarda un candidato nuevo o actualiza uno existente según el estado de `editandoId`.
+   * Muestra alertas de éxito y recarga la lista de candidatos.
+   */
   guardarCandidato() {
     if (this.candidatoForm.invalid) return;
 
@@ -88,6 +113,10 @@ export class CandidatosComponent implements OnInit {
     }
   }
 
+  /**
+   * Elimina un candidato después de confirmar con el usuario.
+   * @param id - Identificador del candidato a eliminar.
+   */
   eliminarCandidato(id: number) {
     if (confirm('¿Estás seguro de eliminar este candidato?')) {
       this.candidatosService.eliminarCandidato(id).subscribe({

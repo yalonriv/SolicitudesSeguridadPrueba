@@ -1,7 +1,5 @@
 <div class="container mt-4">
-  <!-- Botón para CREAR una nueva solicitud -->
-
-  <!-- 🔥 FILTROS -->
+  <!-- FILTROS para buscar solicitudes -->
   <div class="row mb-3">
     <div class="col-md-6">
       <label class="form-label">Filtrar por Estado:</label>
@@ -19,7 +17,7 @@
     </div>
   </div>
 
-  <!-- Tabla de solicitudes -->
+  <!-- Tabla de solicitudes con información detallada -->
   <table class="table table-striped table-hover table-bordered">
     <thead class="table-dark">
       <tr>
@@ -37,16 +35,20 @@
         <td>{{ solicitud.id }}</td>
         <td>{{ solicitud.tipo_estudio.nombre }}</td>
         <td>${{ solicitud.tipo_estudio.precio }}</td>
-        <span class="badge bg-light border" [ngClass]="{
-          'text-danger border-danger': solicitud.estado === 'pendiente',
-          'text-primary border-primary': solicitud.estado === 'en_proceso',
-          'text-success border-success': solicitud.estado === 'completada'
-        }">
-          {{ solicitud.estado }}
-        </span>
+        <td>
+          <!-- Se muestra el estado con estilos dinámicos -->
+          <span class="badge bg-light border" [ngClass]="{
+            'text-danger border-danger': solicitud.estado === 'pendiente',
+            'text-primary border-primary': solicitud.estado === 'en_proceso',
+            'text-success border-success': solicitud.estado === 'completada'
+          }">
+            {{ solicitud.estado }}
+          </span>
+        </td>
         <td>{{ solicitud.candidato.nombre }}</td>
         <td>{{ solicitud.candidato.documento_identidad }}</td>
         <td>
+          <!-- Botón para editar solicitud -->
           <button class="btn btn-warning btn-sm" (click)="editarSolicitud(solicitud)">✏️ Editar</button>
         </td>
       </tr>
@@ -54,14 +56,14 @@
   </table>
 </div>
 
-<!-- Botón para CREAR una nueva solicitud (centrado) -->
+<!-- Botón para abrir el formulario de nueva solicitud -->
 <div class="d-flex justify-content-center mb-3">
   <button class="btn btn-primary" (click)="resetFormulario(); mostrarFormulario = true; modoEdicion = false">
     ➕ Nueva Solicitud
   </button>
 </div>
 
-<!-- Modal para CREAR Solicitud -->
+<!-- Modal para CREAR una nueva solicitud -->
 <div class="modal fade show d-block" *ngIf="mostrarFormulario && !modoEdicion">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -71,6 +73,7 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="solicitudFormCrear" (ngSubmit)="guardarSolicitud()">
+          <!-- Selección de candidato -->
           <div class="mb-3">
             <label class="form-label">Candidato:</label>
             <select class="form-select" formControlName="candidato_id" required>
@@ -79,6 +82,7 @@
               </option>
             </select>
           </div>
+          <!-- Selección del tipo de estudio -->
           <div class="mb-3">
             <label class="form-label">Tipo de Estudio:</label>
             <select class="form-select" formControlName="tipo_estudio_id" required>
@@ -87,6 +91,7 @@
               </option>
             </select>
           </div>
+          <!-- Selección del estado de la solicitud -->
           <div class="mb-3">
             <label class="form-label">Estado:</label>
             <select class="form-select" formControlName="estado" required>
@@ -103,7 +108,7 @@
   </div>
 </div>
 
-<!-- Modal para Editar Solicitud -->
+<!-- Modal para EDITAR una solicitud existente -->
 <div class="modal fade show d-block" *ngIf="mostrarFormulario && modoEdicion">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -131,4 +136,3 @@
     </div>
   </div>
 </div>
-

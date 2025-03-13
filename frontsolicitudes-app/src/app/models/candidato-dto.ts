@@ -1,6 +1,20 @@
+/**
+ * Interfaz que representa la estructura de un candidato.
+ */
 export interface CandidatoDTO {
-    id: number;
-    nombre: string;
-    documento_identidad: string;
-  }
   
+  /**
+   * Identificador único del candidato.
+   */
+  id: number;
+
+  /**
+   * Nombre completo del candidato.
+   */
+  nombre: string;
+
+  /**
+   * Documento de identidad del candidato.
+   */
+  documento_identidad: string;
+}

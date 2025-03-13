@@ -2,20 +2,24 @@
   <!-- Encabezado y Botón de Nuevo Candidato -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="fw-bold">Lista de Candidatos</h2>
+    <!-- Botón para mostrar el formulario de nuevo candidato -->
     <button class="btn btn-primary" (click)="toggleFormulario()">
       <i class="bi bi-person-plus-fill"></i> Nuevo Candidato
     </button>
   </div>
 
-  <!-- Formulario de Nuevo/Editar Candidato -->
+  <!-- Formulario de Nuevo/Editar Candidato (modal) -->
   <div class="modal fade show d-block" *ngIf="mostrarFormulario">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
+          <!-- Título dinámico: "Editar" si hay un candidato seleccionado, de lo contrario "Nuevo" -->
           <h5 class="modal-title">{{ editandoId ? 'Editar Candidato' : 'Nuevo Candidato' }}</h5>
+          <!-- Botón para cerrar el formulario -->
           <button type="button" class="btn-close" (click)="toggleFormulario()"></button>
         </div>
         <div class="modal-body">
+          <!-- Formulario con validaciones -->
           <form [formGroup]="candidatoForm" (ngSubmit)="guardarCandidato()">
             <div class="mb-3">
               <label class="form-label">Nombre:</label>
@@ -42,6 +46,7 @@
               <input type="text" class="form-control" formControlName="telefono">
             </div>
 
+            <!-- Botones para guardar o cancelar -->
             <div class="d-flex justify-content-end gap-2">
               <button type="submit" class="btn btn-success" [disabled]="candidatoForm.invalid">
                 {{ editandoId ? 'Actualizar' : 'Guardar' }}
@@ -68,6 +73,7 @@
         </tr>
       </thead>
       <tbody>
+        <!-- Recorre la lista de candidatos y muestra cada uno en una fila -->
         <tr *ngFor="let candidato of candidatos">
           <td>{{ candidato.id }}</td>
           <td>{{ candidato.nombre }}</td>
@@ -75,9 +81,11 @@
           <td>{{ candidato.correo }}</td>
           <td>{{ candidato.telefono }}</td>
           <td class="text-center">
+            <!-- Botón para editar un candidato -->
             <button class="btn btn-warning btn-sm me-2" (click)="editarCandidato(candidato)">
               <i class="bi bi-pencil-square"></i> Editar
             </button>
+            <!-- Botón para eliminar un candidato -->
             <button class="btn btn-danger btn-sm" (click)="eliminarCandidato(candidato.id)">
               <i class="bi bi-trash"></i> Eliminar
             </button>
