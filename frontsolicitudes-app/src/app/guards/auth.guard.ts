@@ -3,10 +3,13 @@ import { CanActivateFn, Router } from '@angular/router';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
-  const isAuthenticated = !!localStorage.getItem('auth_token'); //Verifica si hay token
+
+  // Verificar si estamos en un entorno donde window está disponible
+  const isBrowser = typeof window !== 'undefined' && typeof localStorage !== 'undefined';
+  const isAuthenticated = isBrowser ? !!localStorage.getItem('auth_token') : false;
 
   if (!isAuthenticated) {
-    router.navigate(['/login']); //Redirige al login si no está autenticado
+    router.navigate(['/login']); // Redirige al login si no está autenticado
     return false;
   }
 
